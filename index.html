@@ -3,27 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Meu Site</title>
+<meta name="theme-color" content="#090d0b">
+<meta name="description" content="MisterLab — laboratório digital de web, Linux e tecnologia.">
+<title>MisterLab | Laboratório Digital</title>
 <style>
-body {
-  background: #101827;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 50px 15px;
+:root {
+  color-scheme: dark;
+  --bg: #090d0b;
+  --panel: #101713;
+  --line: #25362b;
+  --green: #7dff9b;
+  --text: #e6f0e8;
+  --muted: #8b9c90;
 }
-h1 { color: #38bdf8; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.6 system-ui, sans-serif;
+}
+header, main, footer {
+  width: min(100% - 32px, 960px);
+  margin: auto;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+}
+.logo {
+  color: var(--green);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+nav { display: flex; gap: 16px; flex-wrap: wrap; }
+a { color: var(--muted); text-decoration: none; }
+a:hover, a:focus { color: var(--green); }
+.hero { padding: 76px 0 48px; }
+.tag {
+  color: var(--green);
+  font: 12px monospace;
+  letter-spacing: 2px;
+}
+h1 {
+  max-width: 700px;
+  margin: 12px 0;
+  font-size: clamp(38px, 8vw, 70px);
+  line-height: 1.05;
+  letter-spacing: -3px;
+}
+h1 span { color: var(--green); }
+p { color: var(--muted); }
+.hero p { max-width: 540px; font-size: 17px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 20px 0 48px;
+}
+.card {
+  padding: 22px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.card h2 { margin: 0 0 8px; font-size: 17px; }
+.symbol { color: var(--green); font: 22px monospace; }
+.terminal {
+  overflow-wrap: anywhere;
+  background: #060907;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  font: 13px/1.9 monospace;
+}
+.prompt { color: var(--green); }
 button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  background: #38bdf8;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--green);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--green);
+  font: inherit;
+  cursor: pointer;
+}
+button:hover { background: #15281a; }
+footer {
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width: 480px) {
+  header { align-items: flex-start; flex-direction: column; }
+  .hero { padding-top: 52px; }
+  h1 { letter-spacing: -1.5px; }
 }
 </style>
 </head>
 <body>
-<h1>Meu site está no ar!</h1>
-<p>Site criado pelo Termux.</p>
-<button onclick="alert('Funcionou!')">Testar site</button>
+<header>
+  <a class="logo" href="#inicio">MISTERLAB<span>.</span></a>
+  <nav aria-label="Navegação principal">
+    <a href="#laboratorio">Laboratório</a>
+    <a href="#terminal">Terminal</a>
+    <a href="https://github.com/misterddos">GitHub</a>
+  </nav>
+</header>
+<main id="inicio">
+  <section class="hero">
+    <div class="tag">LABORATÓRIO DIGITAL / 001</div>
+    <h1>Ideias em código.<br><span>Conhecimento em ação.</span></h1>
+    <p>Um espaço independente para explorar desenvolvimento web, Linux e ferramentas digitais, construído passo a passo.</p>
+  </section>
+  <section id="laboratorio">
+    <div class="tag">01 / ÁREAS DE EXPLORAÇÃO</div>
+    <div class="grid">
+      <article class="card">
+        <div class="symbol">&lt;/&gt;</div>
+        <h2>Desenvolvimento Web</h2>
+        <p>HTML, CSS e JavaScript para criar experiências digitais próprias.</p>
+      </article>
+      <article class="card">
+        <div class="symbol">$_</div>
+        <h2>Linux &amp; Terminal</h2>
+        <p>Comandos, automação e aprendizado em ambientes Linux.</p>
+      </article>
+      <article class="card">
+        <div class="symbol">[ + ]</div>
+        <h2>Projetos</h2>
+        <p>Um registro organizado das experiências e ferramentas em construção.</p>
+      </article>
+    </div>
+  </section>
+  <section id="terminal">
+    <div class="tag">02 / PAINEL DE DEMONSTRAÇÃO</div>
+    <div class="terminal">
+      <div><span class="prompt">misterlab@web:~$</span> status</div>
+      <div>Projeto: MisterLab</div>
+      <div>Interface: carregada</div>
+      <div>Ambiente: GitHub Pages</div>
+      <button id="testar" type="button">Executar teste visual</button>
+      <div id="resultado" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+<footer>MISTERLAB // Construído com curiosidade e código.</footer>
+<script>
+document.getElementById('testar').addEventListener('click', function () {
+  document.getElementById('resultado').textContent =
+    'OK — JavaScript funcionando no navegador.';
+});
+</script>
 </body>
 </html>
