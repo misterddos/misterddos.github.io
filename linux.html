@@ -207,7 +207,68 @@
       window.addEventListener("load", startEmulator);
     })();
   </script>
-(cole aqui o bloco <div id="mobile-term"> ... </script> inteiro)
+
+<div id="mobile-term" style="max-width:720px;margin:12px auto;padding:0 12px;font-family:monospace;">
+  <pre id="serial-out" style="background:#000;color:#0f0;padding:10px;height:200px;overflow:auto;white-space:pre-wrap;word-break:break-all;margin:0 0 8px;border-radius:6px;"></pre>
+  <form id="serial-form" style="display:flex;gap:6px;">
+    <input id="serial-in" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="digite aqui e toque em Enviar"
+      style="flex:1;padding:10px;font-family:monospace;font-size:16px;">
+    <button type="submit" style="padding:10px 14px;">Enviar</button>
+  </form>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+    <button type="button" data-key="\r">Enter</button>
+    <button type="button" data-key="\t">Tab</button>
+    <button type="button" data-key="\x03">Ctrl+C</button>
+    <button type="button" data-key="\x04">Ctrl+D</button>
+    <button type="button" data-key="\x1b[A">↑</button>
+    <button type="button" data-key="\x1b[B">↓</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  const out = document.getElementById("serial-out");
+  const input = document.getElementById("serial-in");
+  const form = document.getElementById("serial-form");
+
+  function getEmu() {
+    try { return emulator; } catch (e) { return null; }
+  }
+
+  const wait = setInterval(() => {
+    const emu = getEmu();
+    if (!emu || !emu.add_listener) return;
+    clearInterval(wait);
+    emu.add_listener("serial0-output-char", (c) => {
+      out.textContent += c;
+      out.scrollTop = out.scrollHeight;
+    });
+  }, 300);
+
+  function send(text) {
+    const emu = getEmu();
+    if (!emu || !emu.serial0_send) {
+      out.textContent += "\n[Linux ainda não iniciou]\n";
+      return;
+    }
+    emu.serial0_send(text);
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    send(input.value + "\r");
+    input.value = "";
+    input.focus();
+  });
+
+  document.querySelectorAll("[data-key]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      send(btn.dataset.key.replace(/\\r/g, "\r").replace(/\\t/g, "\t")
+        .replace(/\\x([0-9a-f]{2})/gi, (_, h) => String.fromCharCode(parseInt(h, 16))));
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
