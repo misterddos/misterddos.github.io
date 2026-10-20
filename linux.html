@@ -157,6 +157,7 @@
             },
             autostart: true
           });
+          window.emulator = emulator;
 
           emulator.add_listener("emulator-ready", () => {
             setStatus("Emulador pronto. Inicializando o sistema...");
@@ -231,9 +232,7 @@
   const input = document.getElementById("serial-in");
   const form = document.getElementById("serial-form");
 
-  function getEmu() {
-    try { return emulator; } catch (e) { return null; }
-  }
+  function getEmu() { return window.emulator || null; }
 
   const wait = setInterval(() => {
     const emu = getEmu();
