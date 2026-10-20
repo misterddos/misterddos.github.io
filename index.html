@@ -3,163 +3,367 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090d0b">
-<meta name="description" content="MisterLab — laboratório digital de web, Linux e tecnologia.">
-<title>MisterLab | Laboratório Digital</title>
+<meta name="theme-color" content="#080b0a">
+<meta name="description" content="MisterLab — laboratório independente de tecnologia, desenvolvimento web e Linux.">
+<title>MisterLab — Digital Lab</title>
 <style>
 :root {
   color-scheme: dark;
-  --bg: #090d0b;
-  --panel: #101713;
-  --line: #25362b;
-  --green: #7dff9b;
-  --text: #e6f0e8;
-  --muted: #8b9c90;
+  --bg: #080b0a;
+  --panel: #0e1411;
+  --panel2: #121b16;
+  --line: #25392c;
+  --green: #8affaa;
+  --text: #edf5ef;
+  --muted: #91a397;
+  --mono: ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    radial-gradient(ellipse at 80% 0%, #17352235, transparent 38%),
+    var(--bg);
   color: var(--text);
-  font: 15px/1.6 system-ui, sans-serif;
+  font: 15px/1.7 system-ui, sans-serif;
 }
-header, main, footer {
-  width: min(100% - 32px, 960px);
-  margin: auto;
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
 }
+.wrap { width: min(1080px, calc(100% - 36px)); margin: auto; }
 header {
+  min-height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 22px 0;
+  gap: 20px;
   border-bottom: 1px solid var(--line);
 }
 .logo {
-  color: var(--green);
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 21px;
+  font-weight: 900;
   letter-spacing: -1px;
 }
-nav { display: flex; gap: 16px; flex-wrap: wrap; }
-a { color: var(--muted); text-decoration: none; }
-a:hover, a:focus { color: var(--green); }
-.hero { padding: 76px 0 48px; }
-.tag {
+.logo span, .accent { color: var(--green); }
+nav { display: flex; flex-wrap: wrap; gap: 22px; }
+nav a { color: var(--muted); font-size: 13px; }
+nav a:hover { color: var(--green); }
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  font: 11px var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px #8affaa80;
+}
+.hero {
+  position: relative;
+  padding: 94px 0 70px;
+  border-bottom: 1px solid var(--line);
+}
+.eyebrow {
   color: var(--green);
-  font: 12px monospace;
+  font: 12px var(--mono);
   letter-spacing: 2px;
+  text-transform: uppercase;
 }
 h1 {
-  max-width: 700px;
-  margin: 12px 0;
-  font-size: clamp(38px, 8vw, 70px);
-  line-height: 1.05;
-  letter-spacing: -3px;
+  max-width: 850px;
+  margin: 22px 0;
+  font-size: clamp(42px, 8vw, 86px);
+  line-height: .99;
+  letter-spacing: -.065em;
 }
-h1 span { color: var(--green); }
-p { color: var(--muted); }
-.hero p { max-width: 540px; font-size: 17px; }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-  margin: 20px 0 48px;
-}
-.card {
-  padding: 22px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-}
-.card h2 { margin: 0 0 8px; font-size: 17px; }
-.symbol { color: var(--green); font: 22px monospace; }
-.terminal {
-  overflow-wrap: anywhere;
-  background: #060907;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 18px;
-  font: 13px/1.9 monospace;
-}
-.prompt { color: var(--green); }
-button {
-  margin-top: 12px;
-  padding: 10px 14px;
-  border: 1px solid var(--green);
-  border-radius: 7px;
-  background: transparent;
+h1 span {
   color: var(--green);
-  font: inherit;
-  cursor: pointer;
+  text-shadow: 0 0 38px #8affaa1c;
 }
-button:hover { background: #15281a; }
-footer {
-  padding: 24px 0;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 12px;
+.hero p { max-width: 570px; color: var(--muted); font-size: 17px; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 10px 17px;
+  border: 1px solid var(--line); border-radius: 7px;
+  background: var(--panel); color: var(--text);
+  font: 13px var(--mono); cursor: pointer;
 }
-@media (max-width: 480px) {
-  header { align-items: flex-start; flex-direction: column; }
-  .hero { padding-top: 52px; }
-  h1 { letter-spacing: -1.5px; }
+.btn.primary { background: var(--green); border-color: var(--green); color: #071109; font-weight: 800; }
+.btn:hover { border-color: var(--green); }
+.btn.primary:hover { background: #b0ffc3; }
+.section { padding: 54px 0; border-bottom: 1px solid var(--line); }
+.section-head {
+  display: flex; justify-content: space-between; align-items: end;
+  gap: 18px; flex-wrap: wrap; margin-bottom: 23px;
+}
+h2 { margin: 7px 0; font-size: clamp(23px, 4vw, 32px); letter-spacing: -.04em; }
+.sub { margin: 0; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.card {
+  min-width: 0; padding: 23px; border: 1px solid var(--line);
+  border-radius: 10px; background: linear-gradient(145deg, var(--panel2), var(--panel));
+  transition: transform .2s, border-color .2s;
+}
+.card:hover { transform: translateY(-3px); border-color: #52785d; }
+.card .symbol { color: var(--green); font: 24px var(--mono); }
+.card h3 { margin: 20px 0 7px; font-size: 17px; }
+.card p { margin: 0; color: var(--muted); font-size: 14px; }
+.card .number { color: #64786a; font: 11px var(--mono); }
+.lab-layout { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
+.terminal, .widget {
+  min-width: 0; border: 1px solid var(--line); border-radius: 10px;
+  overflow: hidden; background: #090e0b;
+}
+.windowbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 12px 15px; border-bottom: 1px solid var(--line);
+  color: var(--muted); font: 11px var(--mono);
+}
+.lights { display: flex; gap: 5px; }
+.lights i { display: block; width: 7px; height: 7px; border-radius: 50%; background: #34483a; }
+.terminal-body { padding: 17px; font: 12px/1.9 var(--mono); }
+.output { min-height: 128px; max-height: 220px; overflow: auto; overflow-wrap: anywhere; }
+.output p { margin: 0 0 7px; color: #b6c8bb; }
+.output .good { color: var(--green); }
+.output .dim { color: #829487; }
+.commandline { display: flex; gap: 9px; align-items: center; border-top: 1px solid var(--line); padding-top: 12px; }
+.commandline label { color: var(--green); white-space: nowrap; }
+.commandline input {
+  min-width: 0; flex: 1; background: transparent; border: 0;
+  color: var(--text); font: 12px var(--mono); outline: none;
+}
+.commandline button { border: 0; background: transparent; color: var(--green); font: 12px var(--mono); cursor: pointer; }
+.widget-body { padding: 20px; }
+.clock { margin: 8px 0; font: clamp(30px, 5vw, 43px) var(--mono); letter-spacing: -2px; }
+.widget label { display: block; color: var(--muted); font-size: 12px; }
+.info-row { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid #1d2b21; font-size: 13px; }
+.info-row span:first-child { color: var(--muted); }
+.info-row span:last-child { text-align: right; overflow-wrap: anywhere; }
+.small { font-size: 12px; color: var(--muted); }
+footer { padding: 25px 0 35px; color: var(--muted); font: 11px var(--mono); }
+.footer-inner { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+  .lab-layout { grid-template-columns: 1fr; }
+  .hero { padding: 66px 0 52px; }
+  nav { gap: 13px; }
+  header { padding: 17px 0; align-items: flex-start; flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
 </style>
 </head>
 <body>
-<header>
-  <a class="logo" href="#inicio">MISTERLAB<span>.</span></a>
+<header class="wrap">
+  <a class="logo" href="#inicio" aria-label="MisterLab início">MISTER<span>LAB</span>.</a>
   <nav aria-label="Navegação principal">
+    <a href="#explorar">Explorar</a>
     <a href="#laboratorio">Laboratório</a>
-    <a href="#terminal">Terminal</a>
-    <a href="https://github.com/misterddos">GitHub</a>
+    <a href="#sistema">Sistema</a>
+    <a href="https://github.com/misterddos" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
   </nav>
+  <div class="status"><span class="dot"></span> Interface operacional</div>
 </header>
-<main id="inicio">
+
+<main class="wrap" id="inicio">
   <section class="hero">
-    <div class="tag">LABORATÓRIO DIGITAL / 001</div>
-    <h1>Ideias em código.<br><span>Conhecimento em ação.</span></h1>
-    <p>Um espaço independente para explorar desenvolvimento web, Linux e ferramentas digitais, construído passo a passo.</p>
+    <div class="eyebrow">Independent digital lab / 001</div>
+    <h1>Curiosidade vira código.<br><span>Código vira ferramenta.</span></h1>
+    <p>Um laboratório independente para explorar tecnologia, experimentar ideias e construir ferramentas digitais — uma linha de código por vez.</p>
+    <div class="actions">
+      <a class="btn primary" href="#laboratorio">Abrir laboratório ↘</a>
+      <a class="btn" href="https://github.com/misterddos" target="_blank" rel="noopener noreferrer">Ver repositórios ↗</a>
+    </div>
   </section>
-  <section id="laboratorio">
-    <div class="tag">01 / ÁREAS DE EXPLORAÇÃO</div>
+
+  <section class="section" id="explorar">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">01 / Áreas de exploração</div>
+        <h2>O que estamos construindo</h2>
+      </div>
+      <p class="sub">Pesquisa. Teste. Evolução.</p>
+    </div>
     <div class="grid">
       <article class="card">
+        <div class="number">MODULE_001</div>
         <div class="symbol">&lt;/&gt;</div>
-        <h2>Desenvolvimento Web</h2>
-        <p>HTML, CSS e JavaScript para criar experiências digitais próprias.</p>
+        <h3>Web Engineering</h3>
+        <p>Interfaces responsivas, HTML, CSS e JavaScript para transformar ideias em experiências utilizáveis.</p>
       </article>
       <article class="card">
+        <div class="number">MODULE_002</div>
         <div class="symbol">$_</div>
-        <h2>Linux &amp; Terminal</h2>
-        <p>Comandos, automação e aprendizado em ambientes Linux.</p>
+        <h3>Linux Environment</h3>
+        <p>Terminal, ferramentas de desenvolvimento e experimentos locais no ambiente Termux.</p>
       </article>
       <article class="card">
-        <div class="symbol">[ + ]</div>
-        <h2>Projetos</h2>
-        <p>Um registro organizado das experiências e ferramentas em construção.</p>
+        <div class="number">MODULE_003</div>
+        <div class="symbol">{+}</div>
+        <h3>Digital Workshop</h3>
+        <p>Um espaço para reunir projetos, testar recursos e documentar cada evolução do MisterLab.</p>
       </article>
     </div>
   </section>
-  <section id="terminal">
-    <div class="tag">02 / PAINEL DE DEMONSTRAÇÃO</div>
-    <div class="terminal">
-      <div><span class="prompt">misterlab@web:~$</span> status</div>
-      <div>Projeto: MisterLab</div>
-      <div>Interface: carregada</div>
-      <div>Ambiente: GitHub Pages</div>
-      <button id="testar" type="button">Executar teste visual</button>
-      <div id="resultado" aria-live="polite"></div>
+
+  <section class="section" id="laboratorio">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">02 / Ferramentas interativas</div>
+        <h2>Laboratório de navegador</h2>
+      </div>
+      <p class="sub">Execute um comando de demonstração.</p>
+    </div>
+    <div class="lab-layout">
+      <section class="terminal" aria-label="Terminal demonstrativo">
+        <div class="windowbar">
+          <span class="lights"><i></i><i></i><i></i></span>
+          <span>misterlab://console</span>
+          <span>JS MODE</span>
+        </div>
+        <div class="terminal-body">
+          <div class="output" id="output" aria-live="polite">
+            <p class="good">MisterLab Console v1.0</p>
+            <p>Este é um terminal demonstrativo executado no navegador.</p>
+            <p class="dim">Digite help para listar os comandos.</p>
+          </div>
+          <form class="commandline" id="command-form">
+            <label for="command">guest@lab:~$</label>
+            <input id="command" name="command" autocomplete="off" spellcheck="false" maxlength="100" aria-label="Comando demonstrativo">
+            <button type="submit">RUN ↵</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="widget" id="sistema">
+        <div class="windowbar"><span>SYSTEM / LOCAL</span><span>LIVE</span></div>
+        <div class="widget-body">
+          <label>Horário local do dispositivo</label>
+          <div class="clock" id="clock">--:--:--</div>
+          <div class="info-row"><span>Data</span><span id="today">Carregando...</span></div>
+          <div class="info-row"><span>Navegador</span><span id="browser">Detectando...</span></div>
+          <div class="info-row"><span>Plataforma</span><span id="platform">Detectando...</span></div>
+          <div class="info-row"><span>Conexão</span><span id="connection">Verificando...</span></div>
+          <p class="small">Dados locais fornecidos pelo navegador. A conexão indica apenas o estado informado pelo dispositivo.</p>
+        </div>
+      </section>
     </div>
   </section>
 </main>
-<footer>MISTERLAB // Construído com curiosidade e código.</footer>
+
+<footer class="wrap">
+  <div class="footer-inner">
+    <span>MISTERLAB // DIGITAL LABORATORY</span>
+    <span>Construído com curiosidade e código.</span>
+    <span>© <span id="year"></span> MisterLab</span>
+  </div>
+</footer>
+
 <script>
-document.getElementById('testar').addEventListener('click', function () {
-  document.getElementById('resultado').textContent =
-    'OK — JavaScript funcionando no navegador.';
-});
+(function () {
+  "use strict";
+
+  const output = document.getElementById("output");
+  const form = document.getElementById("command-form");
+  const input = document.getElementById("command");
+
+  function line(text, className) {
+    const p = document.createElement("p");
+    p.textContent = text;
+    if (className) p.className = className;
+    output.appendChild(p);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  const commands = {
+    help: function () {
+      line("Comandos disponíveis:", "good");
+      line("help     — mostra esta lista");
+      line("status   — estado da interface");
+      line("date     — data e hora locais");
+      line("about    — informações do MisterLab");
+      line("browser  — informações do navegador");
+      line("clear    — limpa a saída");
+    },
+    status: function () {
+      line("Interface: operacional", "good");
+      line("JavaScript: ativo", "good");
+      line("Hospedagem: GitHub Pages");
+      line("Terminal: simulador local; não executa comandos Linux.");
+    },
+    date: function () {
+      line(new Date().toLocaleString("pt-BR"));
+    },
+    about: function () {
+      line("MisterLab — laboratório independente de tecnologia.");
+      line("Objetivo: aprender, experimentar e construir ferramentas digitais.");
+    },
+    browser: function () {
+      line("Navegador: " + navigator.userAgent);
+      line("Plataforma reportada: " + (navigator.userAgentData?.platform || navigator.platform || "não informada"));
+    },
+    clear: function () {
+      output.replaceChildren();
+      line("Saída limpa.", "good");
+    }
+  };
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const value = input.value.trim();
+    if (!value) return;
+    line("guest@lab:~$ " + value, "good");
+    const name = value.split(/\s+/)[0].toLowerCase();
+    if (commands[name]) {
+      commands[name]();
+    } else {
+      line("Comando desconhecido. Digite help para ver as opções.");
+    }
+    input.value = "";
+  });
+
+  function updateClock() {
+    const now = new Date();
+    document.getElementById("clock").textContent =
+      now.toLocaleTimeString("pt-BR", { hour12: false });
+    document.getElementById("today").textContent =
+      now.toLocaleDateString("pt-BR");
+    document.getElementById("year").textContent = now.getFullYear();
+  }
+
+  const ua = navigator.userAgent;
+  let browser = "Outro navegador";
+  if (/Edg\//.test(ua)) browser = "Microsoft Edge";
+  else if (/OPR\//.test(ua)) browser = "Opera";
+  else if (/Firefox\//.test(ua)) browser = "Firefox";
+  else if (/Chrome\//.test(ua)) browser = "Chrome";
+  else if (/Safari\//.test(ua)) browser = "Safari";
+
+  document.getElementById("browser").textContent = browser;
+  document.getElementById("platform").textContent =
+    navigator.userAgentData?.platform || navigator.platform || "Não informada";
+
+  function updateConnection() {
+    const el = document.getElementById("connection");
+    el.textContent = navigator.onLine ? "Dispositivo online" : "Offline";
+    el.style.color = navigator.onLine ? "var(--green)" : "#ff9b9b";
+  }
+
+  window.addEventListener("online", updateConnection);
+  window.addEventListener("offline", updateConnection);
+  updateClock();
+  updateConnection();
+  window.setInterval(updateClock, 1000);
+})();
 </script>
 </body>
 </html>
