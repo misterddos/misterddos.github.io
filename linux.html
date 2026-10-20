@@ -181,6 +181,7 @@
           emulator.add_listener("emulator-stopped", () => {
             setStatus("Emulador parado.");
             emulator = null;
+            window.emulator = null;
             startButton.disabled = false;
             stopButton.disabled = true;
           });
@@ -232,20 +233,26 @@
   const input = document.getElementById("serial-in");
   const form = document.getElementById("serial-form");
 
-  function getEmu() { return window.emulator || null; }
+  let attached = null;
+  let decoder = new TextDecoder("utf-8");
 
-  const wait = setInterval(() => {
-    const emu = getEmu();
-    if (!emu || !emu.add_listener) return;
-    clearInterval(wait);
-    emu.add_listener("serial0-output-char", (c) => {
-      out.textContent += c;
-      out.scrollTop = out.scrollHeight;
-    });
-  }, 300);
+  function attach() {
+    const emu = window.emulator || null;
+    if (emu === attached) return;
+    attached = emu;
+    decoder = new TextDecoder("utf-8");
+    if (emu && emu.add_listener) {
+      emu.add_listener("serial0-output-byte", (byte) => {
+        out.textContent += decoder.decode(Uint8Array.of(byte), { stream: true });
+        out.scrollTop = out.scrollHeight;
+      });
+    }
+  }
+
+  setInterval(attach, 300);
 
   function send(text) {
-    const emu = getEmu();
+    const emu = window.emulator || null;
     if (!emu || !emu.serial0_send) {
       out.textContent += "\n[Linux ainda não iniciou]\n";
       return;
