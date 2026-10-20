@@ -12,6 +12,19 @@ input,button{box-sizing:border-box;width:100%;padding:14px;margin:8px 0;border-r
 input{background:#111;color:white;border:1px solid #39ff88}
 button{background:#39ff88;border:0;font-weight:bold}
 #out{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:20px}
+
+/* MISTERLAB PLAYER */
+#player-panel{margin-top:24px;padding:20px;background:#0b1210;
+border:1px solid #24583a;border-radius:12px}
+#player-panel h2{color:#39ff88}
+#player-url{width:100%;padding:13px;background:#030605;color:#fff;
+border:1px solid #286340;border-radius:8px}
+#player-panel button{width:100%;padding:13px;background:#39ff88;
+color:#041009;border:0;border-radius:8px;font-weight:bold;cursor:pointer}
+#video-player{display:block;width:100%;max-height:65vh;margin-top:16px;
+background:#000;border-radius:8px}
+#player-status{white-space:pre-wrap;overflow-wrap:anywhere;color:#91a79a}
+
 </style>
 </head>
 <body>
@@ -21,6 +34,23 @@ button{background:#39ff88;border:0;font-weight:bold}
 <input id="url" placeholder="Cole a URL .torrent ou magnet:" />
 <button onclick="check()">VERIFICAR</button>
 <div id="out">Aguardando URL...</div>
+
+<section id="player-panel">
+  <h2>MISTERLAB_PLAYER</h2>
+  <p>Reproduza um vídeo usando seu endereço HTTP ou HTTPS direto.</p>
+  <label for="player-url">URL do vídeo</label>
+  <input id="player-url" type="text"
+    placeholder="https://exemplo.com/video.mp4"
+    autocomplete="off" spellcheck="false">
+  <button id="player-load" type="button">CARREGAR VÍDEO</button>
+  <video id="video-player" controls playsinline preload="metadata"></video>
+  <p id="player-status" role="status" aria-live="polite">
+    Aguardando uma fonte de vídeo.
+  </p>
+  <small>Compatibilidade depende do formato e do servidor. Magnet links
+  não são fontes de vídeo diretas.</small>
+</section>
+
 </main>
 <script>
 async function check(){
@@ -158,6 +188,62 @@ async function check(){
     ], '#ffd479');
   }
 }
+</script>
+<script>
+
+// MISTERLAB PLAYER: reprodução de URLs diretas
+(() => {
+  const input = document.getElementById('player-url');
+  const video = document.getElementById('video-player');
+  const status = document.getElementById('player-status');
+  const button = document.getElementById('player-load');
+
+  button.addEventListener('click', () => {
+    const raw = input.value.trim();
+
+    if (/^magnet:\?/i.test(raw)) {
+      status.textContent =
+        'Magnet reconhecido como link BitTorrent, não como vídeo direto. ' +
+        'Este player ainda não faz download BitTorrent.';
+      return;
+    }
+
+    let url;
+    try {
+      url = new URL(raw);
+    } catch {
+      status.textContent = 'Informe uma URL completa de vídeo.';
+      return;
+    }
+
+    if (!['http:', 'https:'].includes(url.protocol) ||
+        url.username || url.password) {
+      status.textContent = 'URL não aceita. Use HTTP ou HTTPS sem credenciais.';
+      return;
+    }
+
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+    status.textContent = 'Carregando fonte de vídeo...';
+    video.src = url.href;
+    video.load();
+  });
+
+  video.addEventListener('loadedmetadata', () => {
+    const duration = Number.isFinite(video.duration)
+      ? Math.round(video.duration) + ' segundos'
+      : 'duração desconhecida';
+    status.textContent = 'Vídeo carregado. Duração: ' + duration + '.';
+  });
+
+  video.addEventListener('error', () => {
+    status.textContent =
+      'Não foi possível reproduzir esta fonte. Verifique o endereço, ' +
+      'o formato do vídeo e as permissões do servidor.';
+  });
+})();
+
 </script>
 </body>
 </html>
