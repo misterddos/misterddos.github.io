@@ -1,690 +1,461 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b1220">
-<meta name="description" content="MisterLab — laboratório independente de tecnologia, desenvolvimento web e Linux.">
-<title>MisterLab — Digital Lab</title>
-<style>
-:root {
-  color-scheme: dark;
-  --bg: #080b0a;
-  --panel: #0e1411;
-  --panel2: #121b16;
-  --line: #25392c;
-  --green: #8affaa;
-  --text: #edf5ef;
-  --muted: #91a397;
-  --mono: ui-monospace, SFMono-Regular, Consolas, monospace;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  background:
-    radial-gradient(ellipse at 80% 0%, #17352235, transparent 38%),
-    var(--bg);
-  color: var(--text);
-  font: 15px/1.7 system-ui, sans-serif;
-}
-a { color: inherit; text-decoration: none; }
-a:focus-visible, button:focus-visible, input:focus-visible {
-  outline: 2px solid var(--green);
-  outline-offset: 4px;
-}
-.wrap { width: min(1080px, calc(100% - 36px)); margin: auto; }
-header {
-  min-height: 76px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  border-bottom: 1px solid var(--line);
-}
-.logo {
-  font-size: 21px;
-  font-weight: 900;
-  letter-spacing: -1px;
-}
-.logo span, .accent { color: var(--green); }
-nav { display: flex; flex-wrap: wrap; gap: 22px; }
-nav a { color: var(--muted); font-size: 13px; }
-nav a:hover { color: var(--green); }
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--muted);
-  font: 11px var(--mono);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 12px #8affaa80;
-}
-.hero {
-  position: relative;
-  padding: 94px 0 70px;
-  border-bottom: 1px solid var(--line);
-}
-.eyebrow {
-  color: var(--green);
-  font: 12px var(--mono);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-h1 {
-  max-width: 850px;
-  margin: 22px 0;
-  font-size: clamp(42px, 8vw, 86px);
-  line-height: .99;
-  letter-spacing: -.065em;
-}
-h1 span {
-  color: var(--green);
-  text-shadow: 0 0 38px #8affaa1c;
-}
-.hero p { max-width: 570px; color: var(--muted); font-size: 17px; }
-.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
-.btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-height: 44px; padding: 10px 17px;
-  border: 1px solid var(--line); border-radius: 7px;
-  background: var(--panel); color: var(--text);
-  font: 13px var(--mono); cursor: pointer;
-}
-.btn.primary { background: var(--green); border-color: var(--green); color: #071109; font-weight: 800; }
-.btn:hover { border-color: var(--green); }
-.btn.primary:hover { background: #b0ffc3; }
-.section { padding: 54px 0; border-bottom: 1px solid var(--line); }
-.section-head {
-  display: flex; justify-content: space-between; align-items: end;
-  gap: 18px; flex-wrap: wrap; margin-bottom: 23px;
-}
-h2 { margin: 7px 0; font-size: clamp(23px, 4vw, 32px); letter-spacing: -.04em; }
-.sub { margin: 0; color: var(--muted); }
-.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.card {
-  min-width: 0; padding: 23px; border: 1px solid var(--line);
-  border-radius: 10px; background: linear-gradient(145deg, var(--panel2), var(--panel));
-  transition: transform .2s, border-color .2s;
-}
-.card:hover { transform: translateY(-3px); border-color: #52785d; }
-.card .symbol { color: var(--green); font: 24px var(--mono); }
-.card h3 { margin: 20px 0 7px; font-size: 17px; }
-.card p { margin: 0; color: var(--muted); font-size: 14px; }
-.card .number { color: #64786a; font: 11px var(--mono); }
-.lab-layout { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
-.terminal, .widget {
-  min-width: 0; border: 1px solid var(--line); border-radius: 10px;
-  overflow: hidden; background: #090e0b;
-}
-.windowbar {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; padding: 12px 15px; border-bottom: 1px solid var(--line);
-  color: var(--muted); font: 11px var(--mono);
-}
-.lights { display: flex; gap: 5px; }
-.lights i { display: block; width: 7px; height: 7px; border-radius: 50%; background: #34483a; }
-.terminal-body { padding: 17px; font: 12px/1.9 var(--mono); }
-.output { min-height: 128px; max-height: 220px; overflow: auto; overflow-wrap: anywhere; }
-.output p { margin: 0 0 7px; color: #b6c8bb; }
-.output .good { color: var(--green); }
-.output .dim { color: #829487; }
-.commandline { display: flex; gap: 9px; align-items: center; border-top: 1px solid var(--line); padding-top: 12px; }
-.commandline label { color: var(--green); white-space: nowrap; }
-.commandline input {
-  min-width: 0; flex: 1; background: transparent; border: 0;
-  color: var(--text); font: 12px var(--mono); outline: none;
-}
-.commandline button { border: 0; background: transparent; color: var(--green); font: 12px var(--mono); cursor: pointer; }
-.widget-body { padding: 20px; }
-.clock { margin: 8px 0; font: clamp(30px, 5vw, 43px) var(--mono); letter-spacing: -2px; }
-.widget label { display: block; color: var(--muted); font-size: 12px; }
-.info-row { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid #1d2b21; font-size: 13px; }
-.info-row span:first-child { color: var(--muted); }
-.info-row span:last-child { text-align: right; overflow-wrap: anywhere; }
-.small { font-size: 12px; color: var(--muted); }
-footer { padding: 25px 0 35px; color: var(--muted); font: 11px var(--mono); }
-.footer-inner { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-@media (max-width: 720px) {
-  .grid { grid-template-columns: 1fr; }
-  .lab-layout { grid-template-columns: 1fr; }
-  .hero { padding: 66px 0 52px; }
-  nav { gap: 13px; }
-  header { padding: 17px 0; align-items: flex-start; flex-direction: column; }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
-}
-
-/* MISTERLAB CYBERPUNK NEON V2 */
-:root {
-  --bg: #040705;
-  --panel: #080e0a;
-  --panel2: #0c160f;
-  --line: #21462d;
-  --green: #39ff78;
-  --text: #e7ffed;
-  --muted: #91ab98;
-}
-body {
-  background:
-    radial-gradient(ellipse at 78% 5%, #12391f45, transparent 45%),
-    linear-gradient(#39ff7808 1px, transparent 1px),
-    linear-gradient(90deg, #39ff7808 1px, transparent 1px),
-    var(--bg);
-  background-size: auto, 30px 30px, 30px 30px, auto;
-}
-header.wrap {
-  position: fixed;
-  z-index: 100;
-  inset: 0 auto 0 0;
-  width: 244px;
-  max-width: 244px;
-  min-height: 100vh;
-  margin: 0;
-  padding: 28px 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  gap: 0;
-  background: #050a07;
-  border-right: 1px solid #246438;
-  box-shadow: 5px 0 35px #0008;
-}
-.logo {
-  font: 900 23px var(--mono);
-  letter-spacing: -1.4px;
-}
-header nav {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 42px;
-}
-header nav a {
-  padding: 12px;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  font: 12px var(--mono);
-  letter-spacing: .4px;
-  transition: color .2s, background .2s, border-color .2s;
-}
-header nav a:hover,
-header nav a:focus-visible {
-  color: var(--green);
-  background: #39ff780d;
-  border-color: #285a36;
-  box-shadow: inset 3px 0 var(--green), 0 0 14px #39ff780b;
-}
-header .status {
-  margin-top: auto;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-  font-size: 10px;
-}
-.dot {
-  background: var(--green);
-  box-shadow: 0 0 14px #39ff78a0;
-}
-main.wrap,
-footer.wrap {
-  width: calc(100% - 292px);
-  max-width: 1240px;
-  margin-left: 268px;
-  margin-right: 24px;
-}
-.hero {
-  padding-top: 76px;
-  border-bottom-color: var(--line);
-}
-.eyebrow {
-  color: var(--green);
-  text-shadow: 0 0 15px #39ff7830;
-}
-h1 {
-  font-family: var(--mono);
-  letter-spacing: -.075em;
-}
-h1 span {
-  color: var(--green);
-  text-shadow: 0 0 24px #39ff782c;
-}
-.card,
-.terminal,
-.widget {
-  border: 1px solid #244a30;
-  border-radius: 4px;
-  background: linear-gradient(145deg, #0d1911, #060b08);
-  box-shadow: 0 8px 28px #0005;
-}
-.card {
-  position: relative;
-  overflow: hidden;
-}
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 2px;
-  background: #39ff7850;
-}
-.card:hover {
-  border-color: var(--green);
-  box-shadow: 0 0 22px #39ff7815;
-}
-.card .symbol {
-  color: var(--green);
-  text-shadow: 0 0 12px #39ff7838;
-}
-.windowbar {
-  background: #0b150e;
-  border-bottom-color: #244a30;
-}
-.terminal,
-.widget {
-  box-shadow: 0 0 24px #0006;
-}
-.btn {
-  border-radius: 3px;
-  text-transform: uppercase;
-  letter-spacing: .3px;
-  transition: .2s;
-}
-.btn.primary {
-  background: var(--green);
-  border-color: var(--green);
-  color: #031007;
-  box-shadow: 0 0 18px #39ff781c;
-}
-.btn.primary:hover {
-  background: #9dffb8;
-  box-shadow: 0 0 24px #39ff7840;
-}
-.commandline input {
-  caret-color: var(--green);
-}
-::selection {
-  background: var(--green);
-  color: #030704;
-}
-a:focus-visible,
-button:focus-visible,
-input:focus-visible {
-  outline-color: var(--green);
-}
-@media (min-width: 721px) {
-  main.wrap {
-    min-height: calc(100vh - 80px);
-  }
-}
-@media (max-width: 720px) {
-  header.wrap {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    max-width: none;
-    min-height: 0;
-    padding: 17px 16px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-  }
-  header nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 8px;
-  }
-  header nav a {
-    padding: 8px 9px;
-    font-size: 11px;
-  }
-  header .status {
-    margin-top: 4px;
-    padding-top: 10px;
-  }
-  main.wrap,
-  footer.wrap {
-    width: calc(100% - 28px);
-    max-width: none;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .hero {
-    padding-top: 48px;
-  }
-  h1 {
-    overflow-wrap: anywhere;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .card,
-  .btn,
-  header nav a {
-    transition: none !important;
-  }
-}
-
-
-/* MISTERLAB MIDNIGHT BLUE — REDESIGN */
-:root {
-  color-scheme: dark;
-  --bg: #0b1220;
-  --panel: #111c2e;
-  --panel2: #17253a;
-  --line: #293950;
-  --green: #75aaff;
-  --text: #e8eef8;
-  --muted: #9aaac0;
-}
-html { background: var(--bg); }
-body {
-  background: linear-gradient(180deg, #101b2d 0%, var(--bg) 360px);
-  color: var(--text);
-  font-family: system-ui, -apple-system, sans-serif;
-}
-.wrap { width: min(1120px, calc(100% - 40px)); }
-header {
-  min-height: 72px;
-  border-bottom-color: var(--line);
-}
-.logo { letter-spacing: -.7px; }
-.logo span, .accent, .eyebrow { color: #83b4ff; }
-nav a { transition: color .18s; }
-nav a:hover { color: #a9cbff; }
-.status { letter-spacing: .7px; }
-.dot {
-  background: #69a5ff;
-  box-shadow: none;
-}
-.hero {
-  padding: 76px 0 60px;
-  border-bottom-color: var(--line);
-}
-.eyebrow { letter-spacing: 1.4px; }
-h1 {
-  max-width: 800px;
-  font-size: clamp(39px, 7vw, 72px);
-  line-height: 1.04;
-  letter-spacing: -.055em;
-}
-h1 span {
-  color: #8bb9ff;
-  text-shadow: none;
-}
-.hero p { max-width: 610px; line-height: 1.8; }
-.btn {
-  border-color: var(--line);
-  border-radius: 8px;
-  background: #142138;
-  transition: background .18s, border-color .18s;
-}
-.btn.primary {
-  color: #081426;
-  background: #83b4ff;
-  border-color: #83b4ff;
-}
-.btn:hover, .card:hover {
-  border-color: #6688b5;
-}
-.btn.primary:hover { background: #a7cbff; }
-.section {
-  padding: 44px 0;
-  border-bottom-color: var(--line);
-}
-h2 { letter-spacing: -.035em; }
-.grid { gap: 16px; }
-.card {
-  padding: 23px;
-  border-color: var(--line);
-  border-radius: 12px;
-  background: linear-gradient(145deg, #17253a, #111b2b);
-  box-shadow: 0 8px 24px #03091420;
-  transition: border-color .18s, background .18s;
-}
-.card:hover { transform: none; }
-.card .symbol { color: #8bb9ff; }
-.card .number { color: #8094b2; }
-.terminal, .widget {
-  background: #0d1728;
-  border-color: var(--line);
-  border-radius: 12px;
-}
-.windowbar { border-bottom-color: var(--line); }
-.lights i { background: #43536b; }
-.output p { color: #bac8db; }
-.output .good, .commandline label, .commandline button {
-  color: #8bb9ff;
-}
-.output .dim { color: #8395af; }
-.commandline { border-top-color: var(--line); }
-.commandline input { color: var(--text); }
-.info-row { border-bottom-color: #26354b; }
-a:focus-visible, button:focus-visible, input:focus-visible {
-  outline-color: #83b4ff;
-}
-footer { border-top-color: var(--line); }
-@media (max-width: 720px) {
-  .wrap { width: calc(100% - 28px); }
-  .hero { padding: 52px 0 42px; }
-  .section { padding: 34px 0; }
-  .card { padding: 19px; }
-  header { gap: 14px; }
-  nav { gap: 12px 17px; }
-}
-
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aqua Blog</title>
+<link rel="stylesheet" href="frutiger-blog-style.css">
 </head>
 <body>
-<header class="wrap">
-  <a class="logo" href="#inicio" aria-label="MisterLab início">MISTER<span>LAB</span>.</a>
-  <nav aria-label="Navegação principal">
-    <a href="#explorar">Explorar</a>
-    <a href="#laboratorio">Laboratório</a>
-    <a href="#sistema">Sistema</a>
-    <a href="https://github.com/misterddos" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-  </nav>
-  <div class="status"><span class="dot"></span> Interface operacional</div>
-</header>
 
-<main class="wrap" id="inicio">
-  <section class="hero">
-    <div class="eyebrow">Independent digital lab / 001</div>
-    <h1>Curiosidade vira código.<br><span>Código vira ferramenta.</span></h1>
-    <p>Um laboratório independente para explorar tecnologia, experimentar ideias e construir ferramentas digitais — uma linha de código por vez.</p>
-    <div class="actions">
-      <a class="btn primary" href="#laboratorio">Abrir laboratório ↘</a>
-      <a class="btn" href="https://github.com/misterddos" target="_blank" rel="noopener noreferrer">Ver repositórios ↗</a>
-    </div>
-  </section>
+<!-- Bubbles -->
+<div class="bubble" style="width:20px;height:20px;left:4%;animation-duration:14s;animation-delay:0s;"></div>
+<div class="bubble" style="width:12px;height:12px;left:18%;animation-duration:10s;animation-delay:3s;"></div>
+<div class="bubble" style="width:28px;height:28px;left:78%;animation-duration:17s;animation-delay:1s;"></div>
+<div class="bubble" style="width:9px;height:9px;left:88%;animation-duration:9s;animation-delay:5s;"></div>
+<div class="bubble" style="width:16px;height:16px;left:55%;animation-duration:12s;animation-delay:7s;"></div>
+<div class="leaf" style="left:8%;animation-duration:18s;animation-delay:0s;">🍃</div>
+<div class="leaf" style="left:85%;animation-duration:22s;animation-delay:6s;">🌿</div>
 
-  <section class="section" id="explorar">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">01 / Áreas de exploração</div>
-        <h2>O que estamos construindo</h2>
+<div class="site">
+
+  <!-- ====== HEADER ====== -->
+  <header>
+    <div class="hdr-titlebar">
+      <div class="hdr-tb-dots">
+        <div class="hdr-dot r"></div>
+        <div class="hdr-dot y"></div>
+        <div class="hdr-dot g"></div>
       </div>
-      <p class="sub">Pesquisa. Teste. Evolução.</p>
+      <div class="hdr-tb-title">AQUA BLOG my little corner</div>
+      <div class="hdr-tb-url">https://yourname.org</div><!-- ★ change -->
     </div>
-    <div class="grid">
-      <article class="card">
-        <div class="number">MODULE_001</div>
-        <div class="symbol">&lt;/&gt;</div>
-        <h3>Web Engineering</h3>
-        <p>Interfaces responsivas, HTML, CSS e JavaScript para transformar ideias em experiências utilizáveis.</p>
-      </article>
-      <article class="card">
-        <div class="number">MODULE_002</div>
-        <div class="symbol">$_</div>
-        <h3>Linux Environment</h3>
-        <p>Terminal, ferramentas de desenvolvimento e experimentos locais no ambiente Termux.</p>
-      </article>
-      <article class="card">
-        <div class="number">MODULE_003</div>
-        <div class="symbol">{+}</div>
-        <h3>Digital Workshop</h3>
-        <p>Um espaço para reunir projetos, testar recursos e documentar cada evolução do MisterLab.</p>
-      </article>
-    </div>
-  </section>
 
-  <section class="section" id="laboratorio">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">02 / Ferramentas interativas</div>
-        <h2>Laboratório de navegador</h2>
+    <div class="hdr-main">
+      <!-- ★ Mascot — change src, emoji is fallback -->
+      <div class="hdr-mascot">
+        <img class="icon-img" src="delfin (1).png" alt="mascot"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="icon-fallback">🌊</span>
       </div>
-      <p class="sub">Execute um comando de demonstração.</p>
+      <div class="hdr-text">
+        <div class="site-name">aqua <span>blog</span> ✦</div><!-- ★ change -->
+        <div class="site-desc">
+          welcome! i'm a digital artist living in a world of blue skies and bubble sounds~<br>
+          this is where i post my art, thoughts, and obsessions. stay a while ♡
+        </div><!-- ★ change -->
+        <div class="hdr-badges">
+          <span class="aero-badge ab-blue">🌐 artist</span>
+          <span class="aero-badge ab-aqua">💧 y2k lover</span>
+          <span class="aero-badge ab-green">🌿 gamer</span>
+          <span class="aero-badge ab-sky">☁️ dreamer</span>
+          <span class="aero-badge ab-teal">🐟 aquatic</span>
+        </div><!-- ★ change badges -->
+      </div>
     </div>
-    <div class="lab-layout">
-      <section class="terminal" aria-label="Terminal demonstrativo">
-        <div class="windowbar">
-          <span class="lights"><i></i><i></i><i></i></span>
-          <span>misterlab://console</span>
-          <span>JS MODE</span>
-        </div>
-        <div class="terminal-body">
-          <div class="output" id="output" aria-live="polite">
-            <p class="good">MisterLab Console v1.0</p>
-            <p>Este é um terminal demonstrativo executado no navegador.</p>
-            <p class="dim">Digite help para listar os comandos.</p>
-          </div>
-          <form class="commandline" id="command-form">
-            <label for="command">guest@lab:~$</label>
-            <input id="command" name="command" autocomplete="off" spellcheck="false" maxlength="100" aria-label="Comando demonstrativo">
-            <button type="submit">RUN ↵</button>
-          </form>
-        </div>
-      </section>
 
-      <section class="widget" id="sistema">
-        <div class="windowbar"><span>SYSTEM / LOCAL</span><span>LIVE</span></div>
-        <div class="widget-body">
-          <label>Horário local do dispositivo</label>
-          <div class="clock" id="clock">--:--:--</div>
-          <div class="info-row"><span>Data</span><span id="today">Carregando...</span></div>
-          <div class="info-row"><span>Navegador</span><span id="browser">Detectando...</span></div>
-          <div class="info-row"><span>Plataforma</span><span id="platform">Detectando...</span></div>
-          <div class="info-row"><span>Conexão</span><span id="connection">Verificando...</span></div>
-          <p class="small">Dados locais fornecidos pelo navegador. A conexão indica apenas o estado informado pelo dispositivo.</p>
-        </div>
-      </section>
-    </div>
-  </section>
-</main>
+    <nav>
+      <a href="#" class="nav-tab active" data-tab="blog"  onclick="switchTab('blog',this);  return false;">🏠 home</a>
+      <a href="#" class="nav-tab"        data-tab="about" onclick="switchTab('about',this); return false;">👤 about</a>
+      <a href="#" class="nav-tab"        data-tab="art"   onclick="switchTab('art',this);   return false;">🎨 art</a>
+      <a href="#" class="nav-tab"        data-tab="diary" onclick="switchTab('diary',this); return false;">📝 diary</a>
+      <a href="#" class="nav-tab"        data-tab="music" onclick="switchTab('music',this); return false;">🎵 music</a>
+      <a href="#" class="nav-tab"        data-tab="links" onclick="switchTab('links',this); return false;">🔗 links</a>
+    </nav>
+  </header>
 
-<footer class="wrap">
-  <div class="footer-inner">
-    <span>MISTERLAB // DIGITAL LABORATORY</span>
-    <span>Construído com curiosidade e código.</span>
-    <span>© <span id="year"></span> MisterLab</span>
+  <div class="breadcrumb">
+    <div class="bc-globe"></div>
+    <a href="#">Home</a> ▸
+    <span id="breadcrumb-current" style="color:var(--text-dark);font-weight:bold;">Latest Posts</span>
   </div>
-</footer>
 
-<script>
-(function () {
-  "use strict";
+  <!-- ====== BODY ====== -->
+  <div class="body-wrap">
+    <div class="main-col">
 
-  const output = document.getElementById("output");
-  const form = document.getElementById("command-form");
-  const input = document.getElementById("command");
+      <!-- ══ TAB: BLOG ══ -->
+      <div class="tab-pane active" id="tab-blog">
 
-  function line(text, className) {
-    const p = document.createElement("p");
-    p.textContent = text;
-    if (className) p.className = className;
-    output.appendChild(p);
-    output.scrollTop = output.scrollHeight;
-  }
+        <div class="glass post">
+          <div class="glass-header">
+            <div class="gh-icon aqua"></div>
+            <span class="gh-title">📝 Blog Post</span>
+            <span class="gh-count">June 14, 2025</span>
+          </div>
+          <div class="post-inner">
+            <div class="post-meta">
+              <span class="post-date">2025.06.14</span>
+              <span class="post-tag pt-art">✿ ART</span>
+            </div>
+            <!-- ★ Change src to your post image -->
+            <div class="post-thumb thumb-1">
+              <img class="icon-img" src="main.jpg" alt="post"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+              <span class="icon-fallback">🎨</span>
+            </div>
+            <div class="post-title"><a href="#">my new oc is finally done!! ☁️ introducing luna starlight</a></div>
+            <div class="post-excerpt">three weeks of work and she's finally here! luna is a magical girl who bends starlight and lives between two worlds — the digital aether and the waking dream.</div>
+            <div class="post-footer">
+              <a href="#" class="aero-btn btn-blue">read more ▶</a>
+              <div class="post-stats"><span class="stat-bubble"></span> 94 likes · ★ 18</div>
+            </div>
+          </div>
+        </div>
 
-  const commands = {
-    help: function () {
-      line("Comandos disponíveis:", "good");
-      line("help     — mostra esta lista");
-      line("status   — estado da interface");
-      line("date     — data e hora locais");
-      line("about    — informações do MisterLab");
-      line("browser  — informações do navegador");
-      line("clear    — limpa a saída");
-    },
-    status: function () {
-      line("Interface: operacional", "good");
-      line("JavaScript: ativo", "good");
-      line("Hospedagem: GitHub Pages");
-      line("Terminal: simulador local.");
-    },
-    date: function () {
-      line(new Date().toLocaleString("pt-BR"));
-    },
-    about: function () {
-      line("MisterLab — laboratório independente de tecnologia.");
-      line("Objetivo: aprender, experimentar e construir ferramentas digitais.");
-    },
-    browser: function () {
-      line("Navegador: " + navigator.userAgent);
-      line("Plataforma reportada: " + (navigator.userAgentData?.platform || navigator.platform || "não informada"));
-    },
-    clear: function () {
-      output.replaceChildren();
-      line("Saída limpa.", "good");
-    }
-  };
+        <div class="glass post">
+          <div class="glass-header">
+            <div class="gh-icon green"></div>
+            <span class="gh-title">📝 Blog Post</span>
+            <span class="gh-count">June 10, 2025</span>
+          </div>
+          <div class="post-inner">
+            <div class="post-meta">
+              <span class="post-date">2025.06.10</span>
+              <span class="post-tag pt-game">🎮 GAMING</span>
+            </div>
+            <div class="post-thumb thumb-2">
+              <img class="icon-img" src="frutiger2.jpg" alt="post"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+              <span class="icon-fallback">🎮</span>
+            </div>
+            <div class="post-title"><a href="#">starting my .hack// g.u. playthrough — first impressions!</a></div>
+            <div class="post-excerpt">okay so i finally caved and started .hack// g.u. after everyone recommended it and oh my god. the aesthetic alone is sending me.</div>
+            <div class="post-footer">
+              <a href="#" class="aero-btn btn-green">read more ▶</a>
+              <div class="post-stats"><span class="stat-bubble"></span> 61 likes · ★ 9</div>
+            </div>
+          </div>
+        </div>
 
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    const value = input.value.trim();
-    if (!value) return;
-    line("guest@lab:~$ " + value, "good");
-    const name = value.split(/\s+/)[0].toLowerCase();
-    if (commands[name]) {
-      commands[name]();
-    } else {
-      line("Comando desconhecido. Digite help para ver as opções.");
-    }
-    input.value = "";
-  });
+        <div class="glass post">
+          <div class="glass-header">
+            <div class="gh-icon blue"></div>
+            <span class="gh-title">📝 Blog Post</span>
+            <span class="gh-count">June 5, 2025</span>
+          </div>
+          <div class="post-inner">
+            <div class="post-meta">
+              <span class="post-date">2025.06.05</span>
+              <span class="post-tag pt-life">🌸 DIARY</span>
+            </div>
+            <div class="post-thumb thumb-3">
+              <img class="icon-img" src="frutiger.jpg" alt="post"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+              <span class="icon-fallback">🌊</span>
+            </div>
+            <div class="post-title"><a href="#">june goals, summer playlist & why frutiger aero lives rent free in my head</a></div>
+            <div class="post-excerpt">hi everyone!! june is somehow already here and i have Feelings™ about it. summer playlist, goals list, and a mini essay on why frutiger aero still feels like home.</div>
+            <div class="post-footer">
+              <a href="#" class="aero-btn btn-aqua">read more ▶</a>
+              <div class="post-stats"><span class="stat-bubble"></span> 117 likes · ★ 24</div>
+            </div>
+          </div>
+        </div>
 
-  function updateClock() {
-    const now = new Date();
-    document.getElementById("clock").textContent =
-      now.toLocaleTimeString("pt-BR", { hour12: false });
-    document.getElementById("today").textContent =
-      now.toLocaleDateString("pt-BR");
-    document.getElementById("year").textContent = now.getFullYear();
-  }
+        <div class="glass post">
+          <div class="glass-header">
+            <div class="gh-icon blue"></div>
+            <span class="gh-title">📝 Blog Post</span>
+            <span class="gh-count">June 5, 2025</span>
+          </div>
+          <div class="post-inner">
+            <div class="post-meta">
+              <span class="post-date">2025.06.05</span>
+              <span class="post-tag pt-life">🌸 DIARY</span>
+            </div>
+            <div class="post-thumb thumb-3">
+              <img class="icon-img" src="cutegif.gif" alt="post"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+              <span class="icon-fallback">🌊</span>
+            </div>
+            <div class="post-title"><a href="#">june goals, summer playlist & why frutiger aero lives rent free in my head</a></div>
+            <div class="post-excerpt">hi everyone!! june is somehow already here and i have Feelings™ about it. summer playlist, goals list, and a mini essay on why frutiger aero still feels like home.</div>
+            <div class="post-footer">
+              <a href="#" class="aero-btn btn-aqua">read more ▶</a>
+              <div class="post-stats"><span class="stat-bubble"></span> 117 likes · ★ 24</div>
+            </div>
+          </div>
+        </div>
 
-  const ua = navigator.userAgent;
-  let browser = "Outro navegador";
-  if (/Edg\//.test(ua)) browser = "Microsoft Edge";
-  else if (/OPR\//.test(ua)) browser = "Opera";
-  else if (/Firefox\//.test(ua)) browser = "Firefox";
-  else if (/Chrome\//.test(ua)) browser = "Chrome";
-  else if (/Safari\//.test(ua)) browser = "Safari";
+        <div class="glass">
+          <div class="pagination">
+            <a href="#" class="page-btn">◀</a>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">3</a>
+            <a href="#" class="page-btn">▶</a>
+          </div>
+        </div>
 
-  document.getElementById("browser").textContent = browser;
-  document.getElementById("platform").textContent =
-    navigator.userAgentData?.platform || navigator.platform || "Não informada";
+      </div><!-- end tab-blog -->
 
-  function updateConnection() {
-    const el = document.getElementById("connection");
-    el.textContent = navigator.onLine ? "Dispositivo online" : "Offline";
-    el.style.color = navigator.onLine ? "var(--green)" : "#ff9b9b";
-  }
+      <!-- ══ TAB: ABOUT ══ -->
+      <div class="tab-pane" id="tab-about">
+        <div class="glass">
+          <div class="glass-header">
+            <div class="gh-icon aqua"></div>
+            <span class="gh-title">👤 about me</span>
+          </div>
+          <div class="post-inner">
+            <!-- ★ Change src to your about banner -->
+            <div class="about-hero">
+              <img class="icon-img" src="cutegif.gif" alt="post"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+              <span class="icon-fallback">🌿</span>
+            </div>
+            <!-- ★ Change text -->
+            <div class="about-text">
+              hi!! i'm a digital artist living in a world of soft gradients and bubble sounds.
+              i love Y2K aesthetics, early internet culture, and anything that glows.
+              this site is my little space to share what i make and love 💙
+            </div>
+            <ul class="about-facts">
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#90d8ff,#2890e0)"></div>🎮 playing: .hack// g.u.</li>
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#90f0e0,#28b098)"></div>📚 reading: Vampire Knight</li>
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#a0f060,#38a810)"></div>🎵 obsessed with: eurobeat</li>
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#ffc8e8,#e068b8)"></div>☁️ mood: soft & glowy</li>
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#ffe090,#d8b020)"></div>🌐 pronouns: she/her</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-  window.addEventListener("online", updateConnection);
-  window.addEventListener("offline", updateConnection);
-  updateClock();
-  updateConnection();
-  window.setInterval(updateClock, 1000);
-})();
-</script>
+      <!-- ══ TAB: ART ══ -->
+      <div class="tab-pane" id="tab-art">
+        <div class="glass">
+          <div class="glass-header">
+            <div class="gh-icon pink"></div>
+            <span class="gh-title">🎨 art gallery</span>
+            <span class="gh-count">click to view full size</span>
+          </div>
+          <div class="post-inner">
+            <!-- ★ Change src on each slot (6 total) -->
+            <div class="art-grid">
+              <div class="art-item"><img class="icon-img" src="beach.gif" alt="art" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">🎨</span></div>
+              <div class="art-item"><img class="icon-img" src="icon.jpg" alt="art" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">🌸</span></div>
+              <div class="art-item"><img class="icon-img" src="gallery.gif" alt="art" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">⭐</span></div>
+              <div class="art-item"><img class="icon-img" src="mountain.jpg" alt="art" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">🌊</span></div>
+              <div class="art-item"><img class="icon-img" src="frutiger.jpg" alt="art" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">🌿</span></div>
+              <div class="art-item"><img class="icon-img" src="frutiger2.jpg" alt="art" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">💫</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ TAB: DIARY ══ -->
+      <div class="tab-pane" id="tab-diary">
+
+        <div class="glass post">
+          <div class="glass-header">
+            <div class="gh-icon blue"></div>
+            <span class="gh-title">🌸 Diary Entry</span>
+            <span class="gh-count">June 12, 2025</span>
+          </div>
+          <div class="diary-post">
+            <div class="diary-date"><span class="post-date">2025.06.12</span><span class="post-tag pt-life">🌸 DIARY</span></div>
+            <div class="diary-title"><a href="#">a rainy afternoon and some thoughts</a></div>
+            <div class="diary-thumb dt-pink">
+              <img class="icon-img" src="main.jpg" alt="diary" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+              <span class="icon-fallback">🌸</span>
+            </div>
+            <div class="diary-excerpt">it's been raining all day and i've been cozy inside with tea and my drawing tablet. i finished a small sketch, listened to a lot of eurobeat...</div>
+            <a href="#" class="aero-btn btn-blue">read more ▶</a>
+          </div>
+        </div>
+
+        <div class="glass post">
+          <div class="glass-header">
+            <div class="gh-icon aqua"></div>
+            <span class="gh-title">🌸 Diary Entry</span>
+            <span class="gh-count">June 3, 2025</span>
+          </div>
+          <div class="diary-post">
+            <div class="diary-date"><span class="post-date">2025.06.03</span><span class="post-tag pt-life">🌸 DIARY</span></div>
+            <div class="diary-title"><a href="#">things i want to do this summer ☀️</a></div>
+            <div class="diary-thumb dt-aqua">
+              <img class="icon-img" src="frutiger2.jpg" alt="diary" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+              <span class="icon-fallback">☀️</span>
+            </div> 
+            <div class="diary-excerpt">made a little list of things i want to accomplish before september. finish 5 illustrations, beat .hack//, rewatch sailor moon...</div>
+            <a href="#" class="aero-btn btn-aqua">read more ▶</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ TAB: MUSIC ══ -->
+      <div class="tab-pane" id="tab-music">
+        <div class="glass">
+          <div class="glass-header"><div class="gh-icon blue"></div><span class="gh-title">🎵 music i love</span></div>
+          <div class="post-inner">
+            <div class="about-text">a little collection of songs and albums that mean something to me ♪</div>
+            <ul class="about-facts">
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#a8e8f8,#38b8d8)"></div>🎵 Butterfly — Smile.dk</li>
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#a0f060,#38a810)"></div>🎵 frutiger aero — amirthetrash</li>
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#ffc8e8,#e068b8)"></div>🎵 Caramelldansen — Caramell</li>
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#90d8ff,#2890e0)"></div>🎵 Deja Vu — Dave Rodgers</li>
+              <li><div class="af-dot" style="background:radial-gradient(circle at 35% 30%,#ffe090,#d8b020)"></div>🎵 Ready Steady Go — L'Arc~en~Ciel</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ TAB: LINKS ══ -->
+      <div class="tab-pane" id="tab-links">
+        <div class="glass">
+          <div class="glass-header"><div class="gh-icon aqua"></div><span class="gh-title">🔗 find me everywhere</span></div>
+          <div class="post-inner" style="display:flex;flex-direction:column;gap:7px;">
+            <!-- ★ Change href and icon src for each row -->
+            <a href="#" class="links-row">
+              <div class="msn-icon i-sky" style="width:26px;height:26px;flex-shrink:0;">
+                <img class="icon-img" src="https://bsky.app/static/apple-touch-icon.png" alt="bsky" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">🦋</span>
+              </div>
+              <div style="flex:1;"><div class="lk-name">Bluesky</div><div class="lk-sub">@yourhandle.bsky.social</div></div>
+              <span class="lk-arrow">▶</span>
+            </a>
+            <a href="#" class="links-row">
+              <div class="msn-icon i-pink" style="width:26px;height:26px;flex-shrink:0;">
+                <img class="icon-img" src="https://cdn-icons-png.flaticon.com/128/1384/1384063.png" alt="ig" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">📸</span>
+              </div>
+              <div style="flex:1;"><div class="lk-name">Instagram</div><div class="lk-sub">art & behind the scenes</div></div>
+              <span class="lk-arrow">▶</span>
+            </a>
+            <a href="#" class="links-row">
+              <div class="msn-icon i-green" style="width:26px;height:26px;flex-shrink:0;">
+                <img class="icon-img" src="https://storage.ko-fi.com/cdn/cup-border.png" alt="kofi" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">☕</span>
+              </div>
+              <div style="flex:1;"><div class="lk-name">Ko-fi</div><div class="lk-sub">support my work!</div></div>
+              <span class="lk-arrow">▶</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end main-col -->
+
+    <!-- ====== SIDEBAR ====== -->
+    <div class="sidebar">
+
+      <div class="glass sb-profile">
+        <div class="glass-header"><div class="gh-icon aqua"></div><span class="gh-title">✦ about me</span></div>
+        <div class="post-inner">
+          <!-- ★ Change src to your avatar -->
+          <div class="sb-avatar">
+            <img class="icon-img" src="icon.jpg" alt="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            <span class="icon-fallback">🌿</span>
+          </div>
+          <div class="sb-name">Your Name</div><!-- ★ change -->
+          <div class="sb-sub">she/her · artist · digital dreamer</div><!-- ★ change -->
+          <div class="sb-status"><div class="sb-status-dot"></div>online ♡</div>
+          <!-- ★ Change href and src for each social icon -->
+          <div class="msn-icons">
+            <a href="#" class="msn-icon i-sky"><img class="icon-img" src="https://bsky.app/static/apple-touch-icon.png" alt="bsky" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">🦋</span></a>
+            <a href="#" class="msn-icon i-pink"><img class="icon-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/32px-Instagram_logo_2022.svg.png" alt="ig" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">📸</span></a>
+            <a href="#" class="msn-icon i-aqua"><img class="icon-img" src="https://i.imgur.com/your-mail.png" alt="mail" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">✉️</span></a>
+            <a href="#" class="msn-icon i-green"><img class="icon-img" src="https://storage.ko-fi.com/cdn/cup-border.png" alt="kofi" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="icon-fallback">☕</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass">
+        <div class="glass-header"><div class="gh-icon blue"></div><span class="gh-title">a little bit~</span></div>
+        <div class="about-block">
+          <p>hi!! i make digital art and write about things i love. obsessed with aqua aesthetics, early 2000s internet, and anything that glows 💙</p><!-- ★ change -->
+          <ul class="about-list">
+            <li><div class="al-dot" style="background:radial-gradient(circle at 35% 30%,#90d8ff,#2890e0)"></div>playing: .hack// g.u.</li>
+            <li><div class="al-dot" style="background:radial-gradient(circle at 35% 30%,#90f0e0,#28b098)"></div>reading: Vampire Knight</li>
+            <li><div class="al-dot" style="background:radial-gradient(circle at 35% 30%,#a0f060,#38a810)"></div>mood: ☁️ glowy & soft</li>
+            <li><div class="al-dot" style="background:radial-gradient(circle at 35% 30%,#ffc8e8,#e068b8)"></div>listening: eurobeat ♪</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ★ Music player — change SC URL and track name -->
+      <div class="glass">
+        <div class="glass-header"><div class="gh-icon blue"></div><span class="gh-title">🎵 now playing</span></div>
+        <div class="post-inner" style="padding:10px 12px;">
+          <iframe id="sc-player-fa"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/ekaterina-chernova-330213868/amirthetrash-frutiger-aero&auto_play=true&hide_related=true&show_comments=false&show_user=false&visual=false"
+            width="1" height="1" style="position:absolute;opacity:0;pointer-events:none;" allow="autoplay"></iframe>
+          <div class="mp-track" id="mp-track-fa">♪ frutiger aero — amirthetrash</div><!-- ★ change -->
+          <div class="mp-controls">
+            <div class="mp-disc" id="mp-disc-fa"></div>
+            <div class="mp-btn"  id="mp-btn-fa">▶</div>
+            <div class="mp-bars" id="mp-bars-fa">
+              <div class="mp-bar"></div><div class="mp-bar"></div>
+              <div class="mp-bar"></div><div class="mp-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass">
+        <div class="glass-header"><div class="gh-icon green"></div><span class="gh-title">categories</span></div>
+        <div class="cat-body">
+          <a href="#" class="cat-row"><div class="cat-orb co-sky"></div><span class="cat-name">✿ Art</span><span class="cat-num">18</span></a>
+          <a href="#" class="cat-row"><div class="cat-orb co-green"></div><span class="cat-name">🎮 Gaming</span><span class="cat-num">12</span></a>
+          <a href="#" class="cat-row"><div class="cat-orb co-aqua"></div><span class="cat-name">🌸 Diary</span><span class="cat-num">9</span></a>
+          <a href="#" class="cat-row"><div class="cat-orb co-teal"></div><span class="cat-name">🎵 Music</span><span class="cat-num">5</span></a>
+        </div>
+      </div>
+
+      <div class="glass">
+        <div class="glass-header"><div class="gh-icon aqua"></div><span class="gh-title">recent posts</span></div>
+        <div class="recent-body">
+          <a href="#" class="recent-row"><div class="recent-orb"></div><div class="recent-info"><span class="recent-title">luna starlight OC reveal!</span><span class="recent-date">Jun 14</span></div></a>
+          <a href="#" class="recent-row"><div class="recent-orb"></div><div class="recent-info"><span class="recent-title">.hack// g.u. first impressions</span><span class="recent-date">Jun 10</span></div></a>
+          <a href="#" class="recent-row"><div class="recent-orb"></div><div class="recent-info"><span class="recent-title">june goals & summer playlist</span><span class="recent-date">Jun 5</span></div></a>
+          <a href="#" class="recent-row"><div class="recent-orb"></div><div class="recent-info"><span class="recent-title">fav eurobeat tracks 2025</span><span class="recent-date">May 30</span></div></a>
+        </div>
+      </div>
+
+      <div class="glass">
+        <div class="glass-header"><div class="gh-icon pink"></div><span class="gh-title">👁 visitors</span></div>
+        <div class="counter-body">
+          <div class="counter-digits">001 337</div>
+          <div class="counter-sub">you are visitor #001337! ♡</div>
+        </div>
+      </div>
+
+      <div class="glass">
+        <div class="glass-header"><div class="gh-icon blue"></div><span class="gh-title">tags</span></div>
+        <div class="tags-body">
+          <a href="#" class="tag-pill">#frutiger-aero</a>
+          <a href="#" class="tag-pill">#y2k</a>
+          <a href="#" class="tag-pill">#pixelart</a>
+          <a href="#" class="tag-pill">#gaming</a>
+          <a href="#" class="tag-pill">#oc</a>
+          <a href="#" class="tag-pill">#aqua</a>
+          <a href="#" class="tag-pill">#anime</a>
+          <a href="#" class="tag-pill">#retro</a>
+          <a href="#" class="tag-pill">#eurobeat</a>
+        </div>
+      </div>
+
+    </div><!-- end sidebar -->
+  </div><!-- end body-wrap -->
+
+  <footer>
+    <div class="footer-copy">© AQUABLOG · all rights reserved ✦</div><!-- ★ change -->
+    <div class="footer-icons">
+      <div class="footer-orb fo-blue">🌐</div>
+      <div class="footer-orb fo-aqua">💧</div>
+      <div class="footer-orb fo-green">🌿</div>
+    </div>
+    <div class="footer-made">made with ♡ by <a href="https://vgen.co/grevaleart" target="_blank">Grecia V.</a></div><!-- ★ change -->
+  </footer>
+
+</div><!-- end .site -->
+
+<!-- SoundCloud API + your scripts -->
+<script src="https://w.soundcloud.com/player/api.js"></script>
+<script src="frutiger-blog-script.js"></script>
+
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <span class="lightbox-close" onclick="document.getElementById('lightbox').classList.remove('open')">✕</span>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="full size">
+</div>
 </body>
 </html>
