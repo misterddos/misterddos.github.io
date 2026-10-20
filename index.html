@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080b0a">
+<meta name="theme-color" content="#0b1220">
 <meta name="description" content="MisterLab — laboratório independente de tecnologia, desenvolvimento web e Linux.">
 <title>MisterLab — Digital Lab</title>
 <style>
@@ -160,6 +160,327 @@ footer { padding: 25px 0 35px; color: var(--muted); font: 11px var(--mono); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* MISTERLAB CYBERPUNK NEON V2 */
+:root {
+  --bg: #040705;
+  --panel: #080e0a;
+  --panel2: #0c160f;
+  --line: #21462d;
+  --green: #39ff78;
+  --text: #e7ffed;
+  --muted: #91ab98;
+}
+body {
+  background:
+    radial-gradient(ellipse at 78% 5%, #12391f45, transparent 45%),
+    linear-gradient(#39ff7808 1px, transparent 1px),
+    linear-gradient(90deg, #39ff7808 1px, transparent 1px),
+    var(--bg);
+  background-size: auto, 30px 30px, 30px 30px, auto;
+}
+header.wrap {
+  position: fixed;
+  z-index: 100;
+  inset: 0 auto 0 0;
+  width: 244px;
+  max-width: 244px;
+  min-height: 100vh;
+  margin: 0;
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  background: #050a07;
+  border-right: 1px solid #246438;
+  box-shadow: 5px 0 35px #0008;
+}
+.logo {
+  font: 900 23px var(--mono);
+  letter-spacing: -1.4px;
+}
+header nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 42px;
+}
+header nav a {
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font: 12px var(--mono);
+  letter-spacing: .4px;
+  transition: color .2s, background .2s, border-color .2s;
+}
+header nav a:hover,
+header nav a:focus-visible {
+  color: var(--green);
+  background: #39ff780d;
+  border-color: #285a36;
+  box-shadow: inset 3px 0 var(--green), 0 0 14px #39ff780b;
+}
+header .status {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 10px;
+}
+.dot {
+  background: var(--green);
+  box-shadow: 0 0 14px #39ff78a0;
+}
+main.wrap,
+footer.wrap {
+  width: calc(100% - 292px);
+  max-width: 1240px;
+  margin-left: 268px;
+  margin-right: 24px;
+}
+.hero {
+  padding-top: 76px;
+  border-bottom-color: var(--line);
+}
+.eyebrow {
+  color: var(--green);
+  text-shadow: 0 0 15px #39ff7830;
+}
+h1 {
+  font-family: var(--mono);
+  letter-spacing: -.075em;
+}
+h1 span {
+  color: var(--green);
+  text-shadow: 0 0 24px #39ff782c;
+}
+.card,
+.terminal,
+.widget {
+  border: 1px solid #244a30;
+  border-radius: 4px;
+  background: linear-gradient(145deg, #0d1911, #060b08);
+  box-shadow: 0 8px 28px #0005;
+}
+.card {
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: #39ff7850;
+}
+.card:hover {
+  border-color: var(--green);
+  box-shadow: 0 0 22px #39ff7815;
+}
+.card .symbol {
+  color: var(--green);
+  text-shadow: 0 0 12px #39ff7838;
+}
+.windowbar {
+  background: #0b150e;
+  border-bottom-color: #244a30;
+}
+.terminal,
+.widget {
+  box-shadow: 0 0 24px #0006;
+}
+.btn {
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  transition: .2s;
+}
+.btn.primary {
+  background: var(--green);
+  border-color: var(--green);
+  color: #031007;
+  box-shadow: 0 0 18px #39ff781c;
+}
+.btn.primary:hover {
+  background: #9dffb8;
+  box-shadow: 0 0 24px #39ff7840;
+}
+.commandline input {
+  caret-color: var(--green);
+}
+::selection {
+  background: var(--green);
+  color: #030704;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline-color: var(--green);
+}
+@media (min-width: 721px) {
+  main.wrap {
+    min-height: calc(100vh - 80px);
+  }
+}
+@media (max-width: 720px) {
+  header.wrap {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    padding: 17px 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  header nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+  }
+  header nav a {
+    padding: 8px 9px;
+    font-size: 11px;
+  }
+  header .status {
+    margin-top: 4px;
+    padding-top: 10px;
+  }
+  main.wrap,
+  footer.wrap {
+    width: calc(100% - 28px);
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero {
+    padding-top: 48px;
+  }
+  h1 {
+    overflow-wrap: anywhere;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .btn,
+  header nav a {
+    transition: none !important;
+  }
+}
+
+
+/* MISTERLAB MIDNIGHT BLUE — REDESIGN */
+:root {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --panel: #111c2e;
+  --panel2: #17253a;
+  --line: #293950;
+  --green: #75aaff;
+  --text: #e8eef8;
+  --muted: #9aaac0;
+}
+html { background: var(--bg); }
+body {
+  background: linear-gradient(180deg, #101b2d 0%, var(--bg) 360px);
+  color: var(--text);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+.wrap { width: min(1120px, calc(100% - 40px)); }
+header {
+  min-height: 72px;
+  border-bottom-color: var(--line);
+}
+.logo { letter-spacing: -.7px; }
+.logo span, .accent, .eyebrow { color: #83b4ff; }
+nav a { transition: color .18s; }
+nav a:hover { color: #a9cbff; }
+.status { letter-spacing: .7px; }
+.dot {
+  background: #69a5ff;
+  box-shadow: none;
+}
+.hero {
+  padding: 76px 0 60px;
+  border-bottom-color: var(--line);
+}
+.eyebrow { letter-spacing: 1.4px; }
+h1 {
+  max-width: 800px;
+  font-size: clamp(39px, 7vw, 72px);
+  line-height: 1.04;
+  letter-spacing: -.055em;
+}
+h1 span {
+  color: #8bb9ff;
+  text-shadow: none;
+}
+.hero p { max-width: 610px; line-height: 1.8; }
+.btn {
+  border-color: var(--line);
+  border-radius: 8px;
+  background: #142138;
+  transition: background .18s, border-color .18s;
+}
+.btn.primary {
+  color: #081426;
+  background: #83b4ff;
+  border-color: #83b4ff;
+}
+.btn:hover, .card:hover {
+  border-color: #6688b5;
+}
+.btn.primary:hover { background: #a7cbff; }
+.section {
+  padding: 44px 0;
+  border-bottom-color: var(--line);
+}
+h2 { letter-spacing: -.035em; }
+.grid { gap: 16px; }
+.card {
+  padding: 23px;
+  border-color: var(--line);
+  border-radius: 12px;
+  background: linear-gradient(145deg, #17253a, #111b2b);
+  box-shadow: 0 8px 24px #03091420;
+  transition: border-color .18s, background .18s;
+}
+.card:hover { transform: none; }
+.card .symbol { color: #8bb9ff; }
+.card .number { color: #8094b2; }
+.terminal, .widget {
+  background: #0d1728;
+  border-color: var(--line);
+  border-radius: 12px;
+}
+.windowbar { border-bottom-color: var(--line); }
+.lights i { background: #43536b; }
+.output p { color: #bac8db; }
+.output .good, .commandline label, .commandline button {
+  color: #8bb9ff;
+}
+.output .dim { color: #8395af; }
+.commandline { border-top-color: var(--line); }
+.commandline input { color: var(--text); }
+.info-row { border-bottom-color: #26354b; }
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline-color: #83b4ff;
+}
+footer { border-top-color: var(--line); }
+@media (max-width: 720px) {
+  .wrap { width: calc(100% - 28px); }
+  .hero { padding: 52px 0 42px; }
+  .section { padding: 34px 0; }
+  .card { padding: 19px; }
+  header { gap: 14px; }
+  nav { gap: 12px 17px; }
+}
+
 </style>
 </head>
 <body>
