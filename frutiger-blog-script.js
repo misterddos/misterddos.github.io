@@ -1,6 +1,6 @@
 /* =====================================================
    FRUTIGER AERO BLOG — blog.js
-   Handles: tab switching, SC player, image fallbacks
+   Handles: tab switching and image fallbacks
 ===================================================== */
 
 /* -------------------------------------------------------
@@ -11,8 +11,9 @@ var tabLabels = {
   about: 'About Me',
   art:   'Art Gallery',
   diary: 'Diary',
-  music: 'Music',
-  links: 'Links'
+
+  links: 'Links',
+  live: 'TV Dombl ao Vivo'
 };
 
 function switchTab(name, el) {
@@ -23,50 +24,6 @@ function switchTab(name, el) {
   if (el)   el.classList.add('active');
   var bc = document.getElementById('breadcrumb-current');
   if (bc)   bc.textContent = tabLabels[name] || name;
-}
-
-/* -------------------------------------------------------
-   SOUNDCLOUD MINI PLAYER
-   Waits for SC API script to finish loading before binding
-------------------------------------------------------- */
-function initSCPlayer(iframeId, discId, barsId, btnId, trackId) {
-  var attempts = 0;
-  var maxAttempts = 20;
-  var retryDelay = 300;
-  function tryBind() {
-    if (typeof SC === 'undefined') {
-      attempts++;
-      if (attempts < maxAttempts) {
-        setTimeout(tryBind, retryDelay);
-      } else {
-        console.warn('SoundCloud API indisponível.');
-      }
-      return;
-    }
-    var iframe = document.getElementById(iframeId);
-    if (!iframe) return;
-    var widget = SC.Widget(iframe);
-    var disc   = document.getElementById(discId);
-    var bars   = document.getElementById(barsId);
-    var btn    = document.getElementById(btnId);
-    var track  = document.getElementById(trackId);
-
-    function setPlaying(on) {
-      if (disc)  disc.classList.toggle('spinning', on);
-      if (bars)  bars.classList.toggle('active', on);
-      if (track) track.classList.toggle('scrolling', on);
-      if (btn)   btn.textContent = on ? '⏸' : '▶';
-    }
-
-    widget.bind(SC.Widget.Events.PLAY,   function() { setPlaying(true);  });
-    widget.bind(SC.Widget.Events.PAUSE,  function() { setPlaying(false); });
-    widget.bind(SC.Widget.Events.FINISH, function() { setPlaying(false); });
-
-    function toggle() { widget.isPaused(function(p) { p ? widget.play() : widget.pause(); }); }
-    if (btn)  btn.addEventListener('click',  toggle);
-    if (disc) disc.addEventListener('click', toggle);
-  }
-  tryBind();
 }
 
 /* -------------------------------------------------------
@@ -93,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
   initImageFallbacks();
   initLightbox();
   // Frutiger Aero blog player IDs
-  initSCPlayer('sc-player-fa', 'mp-disc-fa', 'mp-bars-fa', 'mp-btn-fa', 'mp-track-fa');
 });
 
 /* -------------------------------------------------------

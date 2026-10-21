@@ -264,35 +264,6 @@ nav { background:linear-gradient(180deg,rgba(100,185,248,.98),rgba(50,140,215,.9
 .about-list li:last-child { border:none; }
 .al-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.15); }
 
-/* ======== MINI PLAYER ======== */
-#sc-player-fa { width:1px;height:1px;position:absolute;opacity:0;pointer-events:none;border:none; }
-.mp-track { font-size:10px;color:var(--text-mid);font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px; }
-.mp-track.scrolling { animation:mpScroll 8s linear infinite; }
-@keyframes mpScroll { 0%,15%{text-indent:0} 85%,100%{text-indent:-80px} }
-.mp-controls { display:flex;align-items:center;gap:6px; }
-.mp-disc { width:22px;height:22px;border-radius:50%;flex-shrink:0;position:relative;box-shadow:0 1px 4px rgba(60,140,200,.4);cursor:pointer;
-  background:
-    radial-gradient(circle at 50% 50%,#d8f0ff 0%,#d8f0ff 14%,transparent 14%),
-    radial-gradient(circle at 50% 50%,transparent 24%,rgba(255,255,255,.6) 26%,transparent 29%),
-    conic-gradient(from 0deg,rgba(180,230,255,.9),rgba(160,255,220,.8),rgba(200,180,255,.8),rgba(160,220,255,.9),rgba(180,255,200,.8),rgba(220,180,255,.8),rgba(180,230,255,.9));
-  border:1px solid rgba(255,255,255,.7);
-}
-.mp-disc::before { content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.5) 0%,transparent 55%);pointer-events:none; }
-.mp-disc::after { content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:5px;height:5px;background:#e8f6ff;border-radius:50%;border:1px solid rgba(160,210,245,.6); }
-.mp-disc.spinning { animation:mpSpin 3s linear infinite; }
-@keyframes mpSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-.mp-btn { width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,rgba(160,220,255,.7),rgba(80,170,230,.8));border:1px solid rgba(255,255,255,.6);box-shadow:0 2px 5px rgba(60,140,200,.25),inset 0 1px 0 rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:9px;color:white;cursor:pointer;flex-shrink:0;transition:all .12s;position:relative;overflow:hidden; }
-.mp-btn::before { content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.35),transparent);border-radius:50% 50% 0 0; }
-.mp-btn:hover { filter:brightness(1.12);transform:scale(1.08); }
-.mp-bars { display:flex;align-items:flex-end;gap:2px;height:14px;margin-left:2px; }
-.mp-bar { width:2px;height:3px;background:linear-gradient(180deg,rgba(80,180,240,.9),rgba(60,150,220,.7));border-radius:1px; }
-.mp-bars.active .mp-bar { animation:mpBar .5s ease-in-out infinite alternate; }
-.mp-bars.active .mp-bar:nth-child(1){animation-delay:0s}
-.mp-bars.active .mp-bar:nth-child(2){animation-delay:.08s}
-.mp-bars.active .mp-bar:nth-child(3){animation-delay:.16s}
-.mp-bars.active .mp-bar:nth-child(4){animation-delay:.04s}
-@keyframes mpBar { from{height:2px} to{height:12px} }
-
 /* Categories */
 .cat-body { padding:10px 12px;display:flex;flex-direction:column;gap:4px; }
 .cat-row { display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:rgba(255,255,255,.4);border:1px solid rgba(160,215,248,.3);cursor:pointer;text-decoration:none;transition:all .12s;box-shadow:0 1px 4px rgba(40,120,200,.08),inset 0 1px 0 rgba(255,255,255,.6); }
@@ -344,10 +315,6 @@ footer::before { content:'';position:absolute;top:0;left:0;right:0;height:50%;ba
 ::-webkit-scrollbar-track { background:rgba(200,238,255,.4); }
 ::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#88c8f8,#3898d8);border-radius:5px;border:1px solid rgba(255,255,255,.4); }
 
-@media (max-width:680px) {
-  .body-wrap { grid-template-columns:1fr; }
-  .site-name  { font-size:20px; }
-}
 
 /* ======== IMAGE LIGHTBOX ======== */
 .lightbox-overlay {
@@ -386,3 +353,6 @@ footer::before { content:'';position:absolute;top:0;left:0;right:0;height:50%;ba
   transition: transform .15s;
 }
 .lightbox-close:hover { transform: scale(1.2); }
+
+/* Modo estático: reduzir movimento e trabalho de renderização */
+* , *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
