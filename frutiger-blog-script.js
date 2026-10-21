@@ -30,8 +30,19 @@ function switchTab(name, el) {
    Waits for SC API script to finish loading before binding
 ------------------------------------------------------- */
 function initSCPlayer(iframeId, discId, barsId, btnId, trackId) {
+  var attempts = 0;
+  var maxAttempts = 20;
+  var retryDelay = 300;
   function tryBind() {
-    if (typeof SC === 'undefined') { setTimeout(tryBind, 300); return; }
+    if (typeof SC === 'undefined') {
+      attempts++;
+      if (attempts < maxAttempts) {
+        setTimeout(tryBind, retryDelay);
+      } else {
+        console.warn('SoundCloud API indisponível.');
+      }
+      return;
+    }
     var iframe = document.getElementById(iframeId);
     if (!iframe) return;
     var widget = SC.Widget(iframe);
